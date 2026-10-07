@@ -5,7 +5,7 @@ from dataclasses import dataclass
 from datetime import date, timedelta
 
 #import Art_3 dataclass
-from taxlation.nl.atw.article3 import Artikel3
+from taxlation.nl.atw.article_3 import Artikel3
 
 @dataclass
 class Artikel1: 

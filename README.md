@@ -1,2 +1,3 @@
-# atw - Algemene termijnenwet
-Deze code is vertaling van de regels van de Algemene termijnenwet (hierna: Atw). Deze regels zijn van toepassing wanneer de einddatum van een termijn op een zaterdag, zondag of algemeen erkende feestdag eindigt.
+#  Taxlation Package
+
+This package is the package of taxlation.

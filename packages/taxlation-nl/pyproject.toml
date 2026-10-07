@@ -1,0 +1,29 @@
+[project]
+name = "taxlation-nl"
+version = "0.1.0"
+authors = [
+  { name= "Taxlation", email = "info@taxlation.com"}
+]
+description = "Translation of Dutch tax legislation into code."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "python-dateutil>=2.9.0.post0",
+    "taxlation-core>=0.1.0",
+]
+license = "MIT"
+license-files = ["LICEN[CS]E*"]
+
+[project.urls]
+Homepage = "https://github.com/taxlation/taxlation"
+Issues = "https://github.com/taxlation/taxlation/issues"
+
+[tool.uv.sources]
+taxlation-core = { workspace = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/taxlation"]
