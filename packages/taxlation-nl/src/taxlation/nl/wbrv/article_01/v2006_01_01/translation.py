@@ -1,5 +1,6 @@
 #import datackasses module
 from dataclasses import dataclass
+from taxlation.core.result import Result
 
 @dataclass
 class Artikel1:  
@@ -20,6 +21,6 @@ class Artikel1:
       bool
     """
     if self.overdrachtsbelasting or self.assurantiebelasting:
-      return True
+      return Result("Art. 1 WBRV", True, "Belasting geheven krachten Wet op belastingen van rechtsverkeer.")
     else:
-      return False
+      return Result("Art. 1 WBRV", False, "Geen belasting geheven krachtens Wet op belastingen van rechtsverkeer.")

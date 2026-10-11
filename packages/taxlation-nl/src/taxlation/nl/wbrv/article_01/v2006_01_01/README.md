@@ -1,4 +1,4 @@
-# wbrv - artikel 1
+# Art. 1 WBRV
 
 ## Classes
 

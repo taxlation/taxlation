@@ -4,7 +4,7 @@ from taxlation.core.result import Result
 @dataclass
 class Artikel15:
   """
-  Class voor artikel 15 WBRV
+  Dataclass voor artikel 15 WBRV
   """
 
   @dataclass
@@ -75,6 +75,6 @@ class Artikel15:
     @property
     def vrijstelling(self) -> Result:
       if (self.onderdeel_p.startersvrijstelling):
-        return Result("Artikel 15, lid 1, WBRV", True, "Vrijstelling van toepassing", (self.onderdeel_p.startersvrijstelling,))
+        return Result("Artikel 15 lid 1 WBRV", True, "Vrijstelling van toepassing", (self.onderdeel_p.startersvrijstelling,))
       else:
-        return Result("Artikel 15, lid 1, WBRV", False, "Geen vrijstelling van toepassing", (self.onderdeel_p.startersvrijstelling,))
+        return Result("Artikel 15 lid 1 WBRV", False, "Geen vrijstelling van toepassing", (self.onderdeel_p.startersvrijstelling,))
