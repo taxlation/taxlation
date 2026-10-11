@@ -1,5 +1,4 @@
 # import package
-import json
 from datetime import date
 from taxlation.nl import wbrv
 
