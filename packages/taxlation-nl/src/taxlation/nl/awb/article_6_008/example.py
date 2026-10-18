@@ -4,6 +4,6 @@ from datetime import date
 from taxlation.nl import awb
 
 # Voorbeeld los gebruik van Art_6_8: 
-art_6_8_voorbeeld= awb.Artikel6_8(datum_bekendmaking_besluit= date(2023,11,3))
+art_6_8_voorbeeld= awb.Artikel6_8().Lid1(datum_bekendmaking_besluit= date(2023,11,3))
 
-print("Einddatum beslistermijn:", art_6_8_voorbeeld.datum_aanvang_indieningstermijn)
+print("Einddatum beslistermijn:", art_6_8_voorbeeld.datum_aanvang_termijn)

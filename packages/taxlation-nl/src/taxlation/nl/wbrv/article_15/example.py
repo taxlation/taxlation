@@ -18,7 +18,7 @@ art_15_1_p_voorbeeld= wbrv.Artikel15(datum_toepassing= date(2026,1,1)).Lid1.Onde
     aanhorigheden_waarde= 5000 
 )
 
-print("Startersvrijstelling in 2026", art_15_1_p_voorbeeld.startersvrijstelling)
+print("Startersvrijstelling in 2026", art_15_1_p_voorbeeld.startersvrijstelling.result)
 
 art_15_lid1_voorbeeld= wbrv.Artikel15(datum_toepassing= date(2026,1,1)).Lid1(art_15_1_p_voorbeeld)
 
