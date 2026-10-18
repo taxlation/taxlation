@@ -5,14 +5,14 @@
 ### Artikel15
 Slechts container en omvat dus geen properties of methods.
 
-### Lid1
+#### Lid1
 **Properties**
-- _onderdeel_p_: dataclass van onderdeel_p (dataclass).
+- _onderdeel_p_: dataclass van OnderdeelP (dataclass).
 **Methods**
 - _vrijstelling_: Stelt vast of een vrijstelling van toepassing is (bool).
 
 
-### OnderdeelP
+##### OnderdeelP
 **Properties**
 - _woning_: Of een woning wordt verkregen of rechten waaraan deze is onderworpen of van rechten van lidmaatschap als bedoeld in artikel 4, eerste lid, onderdeel b, voor zover deze laatste rechten betrekking hebben op een woning wordt verkregen (bool).
 - _verkrijger_natuurlijk_persoon_: Of de verkrijger een natuurlijk persoon is (bool).

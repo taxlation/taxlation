@@ -1,5 +1,6 @@
 #import datackasses module
 from dataclasses import dataclass
+from taxlation.core.result import Result
 
 #import datetime module
 from datetime import date, timedelta
@@ -14,7 +15,7 @@ class Artikel6_7:
   @property
   def indieningstermijn(self):
     return timedelta(weeks=6)
-
+  
   @property
   def datum_einde_indieningstermijn(self):
     """
@@ -25,4 +26,5 @@ class Artikel6_7:
     Geeft terug:
       datetime.date: De datum waarop de indieningstermijn eindigt.
     """
-    return self.datum_aanvang_indieningstermijn + self.indieningstermijn - timedelta(days=1)
+    datum_einde_indieningstermijn= self.datum_aanvang_indieningstermijn + self.indieningstermijn - timedelta(days=1)
+    return Result("Artikel 6:7 Awb",datum_einde_indieningstermijn , "De einddatum van de indieningstermijn.")
