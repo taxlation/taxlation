@@ -2,7 +2,7 @@
 
 ## Classes
 
-### Art_7_10
+### Artikel7_10
 Slechts container en omvat dus geen properties of methods.
 
 #### Lid1

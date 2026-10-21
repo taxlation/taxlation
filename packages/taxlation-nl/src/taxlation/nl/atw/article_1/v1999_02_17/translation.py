@@ -4,60 +4,74 @@ from dataclasses import dataclass
 #import datetime module
 from datetime import date, timedelta
 
-#import Art_3 dataclass
+#import taxlation
+from taxlation.core.result import Result
 from taxlation.nl.atw.article_3 import Artikel3
 
 @dataclass
 class Artikel1: 
   """
-  Dataclass voor Artikel 1 Algemene termijnenwet
+  Dataclass voor Artikel 1 Atw
   """
-  datum_einde_wettelijke_termijn: date # einddatum van een in de wet gestelde termijn
-  wettelijke_termijn: timedelta # in een wet gestelde termijn
-  verlenging_termijn: timedelta = timedelta(days=0) # verlenging van een in de wet gestelde termijn
 
-  def __post_init__(self):
-    self.lid_1()
-    self.lid_2()
-
-  @property
-  def datum_einde_verlengde_termijn(self):
+  @dataclass
+  class Lid1:
     """
-    Berekent de einddatum van de wettelijke termijn met inachtneming van verlenging van de termijn.
-
-    Functie telt de eventuele verlenging op bij de einddatum van de wettelijke termijn.
-
-    Geeft terug:
-      datetime.date: De einddatum met inachtneming van de verlenging.
+    Dataclass voor Artikel 1 lid 1 Atw
     """
-    return self.datum_einde_wettelijke_termijn + self.verlenging_termijn
+    wettelijke_termijn: timedelta # een in een wet gestelde termijn
+    einddatum_wettelijke_termijn: date # einddatum van een in de wet gestelde termijn
 
-  def lid_1(self):
-    """
-    Past de termijn aan zodat de einddatum niet eindigt op zater-, zon- en feestdagen.
+    @property
+    def verlenging_wettelijke_termijn(self) -> Result:
+      """
+      Past de termijn aan zodat de einddatum niet eindigt op zater-, zon- en feestdagen.
 
-    Functie controleert of einddatum op een zater-, zon- of feestdag valt, of in de lijst met feeestdagen voorkomt. 
-    Als dat zo is, wordt de termijn met één dag verlengd en wordt de functie opnieuw toegepast.
-    
-    Geeft terug:
-      datetime.date: De eventueel verlengde termijn met inachtneming van artikel 1, lid 1, ATW.
-    """
-    while self.datum_einde_verlengde_termijn.weekday() >= 5 or self.datum_einde_verlengde_termijn in Artikel3(jaar= self.datum_einde_wettelijke_termijn.year).algemeen_erkende_feestdagen:
-      self.verlenging_termijn += timedelta(days=1)
-    
-    return self.verlenging_termijn
-  
-  def lid_2(self):
-    """
-    Deze functie maakt de termijnaanpassing van functie Art2Lid1 ongedaan als de termijn negatief is.
+      Functie controleert of einddatum op een zater-, zon- of feestdag valt, of in de lijst met feeestdagen voorkomt. 
+      Als dat zo is, wordt de termijn met één dag verlengd en wordt de functie opnieuw toegepast.
+      
+      Geeft terug:
+        datetime.date: De eventueel verlengde termijn met inachtneming van artikel 1, lid 1, ATW.
+      """
 
-    Functie controleert of termijn minder dan 0 is.
-    Als dat zo is, wordt de verlengde einddatum op de oorspronkelijke einddatum gezet.
+      verlenging_termijn = timedelta(days=0)
 
-    Geeft terug:
-      datetime.date: De eventueel niet-verlengde termijn met inachtneming van artikel 1, lid 2, ATW.
+      while self.einddatum_verlengde_wettelijke_termijn(verlenging_termijn).weekday() >= 5 or self.einddatum_verlengde_wettelijke_termijn(verlenging_termijn) in Artikel3(jaar=self.einddatum_verlengde_wettelijke_termijn(verlenging_termijn).year).algemeen_erkende_feestdagen:
+        verlenging_termijn += timedelta(days=1)
+      
+      return Result("Artikel 1 lid 1 Atw", verlenging_termijn, "Termijn verlengd tot en met de eerstvolgende dag die niet een zaterdag, zondag of algemeen erkende feestdag is.",)
+
+    def einddatum_verlengde_wettelijke_termijn(self, verlenging_termijn) -> date:
+      """
+      Berekent de einddatum van de wettelijke termijn met inachtneming van verlenging van de termijn.
+
+      Functie telt de eventuele verlenging op bij de einddatum van de wettelijke termijn.
+
+      Geeft terug:
+        datetime.date: De einddatum met inachtneming van de verlenging.
+      """
+      return self.einddatum_wettelijke_termijn + verlenging_termijn
+
+  @dataclass
+  class Lid2:
     """
-    if self.wettelijke_termijn < timedelta(0):
-      self.verlenging_termijn = timedelta(days=0)
-    
-    return self.verlenging_termijn
+    Dataclass voor Artikel 1 lid 1 Atw
+    """
+    lid_1: "Artikel1.Lid1"
+
+    @property
+    def vorige_lid_geldt_niet(self) -> Result:
+      """
+      Deze functie geeft aan wanneer artikel 1 lid 1 Atw ongeldig is.
+
+      Functie controleert of termijn minder dan 0 is.
+      Als dat zo is, geeft de functie aan dat het vorige lid ongeldig is.
+
+      Geeft terug:
+        bool: True als het vorige lid niet geldt.
+      """
+
+      if self.lid_1.wettelijke_termijn < timedelta(0):
+        return Result("Artikel 1 lid 2 Atw", True, "Artikel 1 lid 1 geldt niet voor een termijn, bepaald door terugrekening vanaf een tijdstip of gebeurtenis.", (self.lid_1.verlenging_wettelijke_termijn,))
+      else:
+        return Result("Artikel 1 lid 2 Atw", False, "Artikel 1 lid 2 Atw is niet van toepassing.", (self.lid_1.verlenging_wettelijke_termijn,))

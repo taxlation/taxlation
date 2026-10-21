@@ -1,13 +1,23 @@
 # atw - artikel 1
 
 ## Classes
-### Artikel 1
+### Artikel1
+Slechts container.
+
+#### Lid1
+**Fields**
+- _wettelijke_termijn_: een in een wet gestelde termijn (timedelta).
+- _einddatum_wettelijke_termijn_: einddatum van een in de wet gestelde termijn (date).
+
 **Properties**
-- _datum_einde_termijn_: Einddatum van een in de wet gestelde termijn (date).
-- _wettelijke_termijn_: In een wet gestelde termijn (timedelta).
-- _verlenging_termijn_: Nieuw te berekenen verlenging van de termijn (timedelta).
-- _datum_einde_verlengde_termijn_: Nieuw te berekenen einddatum van een in de wet gestelde termijn met inachtneming van eventuele verlenging (date).
+- _verlenging_wettelijke_termijn_: verlenging van een in de wet gestelde termijn die op een zaterdag, zondag of algemeen erkende feestdag eindigt tot en met de eerstvolgende dag die niet een zaterdag, zondag of algemeen erkende feestdag is (timedelta).
 
 **Methods**
-- _lid_1()_: Verlengt de termijn, als deze op een zaterdag, zondag of algemeen erkende feestdag eindigt, tot en met de eerstvolgende dag die niet een zaterdag, zondag of feestdag is.
-- _lid_2()_: Maakt de verlenging ongedaan wanneer de termijn is bepaald door terugrekening vanaf de start van een termijn.
+- _einddatum_verlengde_wettelijke_termijn_: berekent de einddatum van een in de wet gestelde termijn met inachtneming van eventuele verlenging (date).
+
+#### Lid2
+**Fields**
+- _lid_1_: dataclass Lid1 (dataclass).
+
+**Properties**
+- _vorige_lid_geldt_niet_: stelt vast of het vorige lid niet geldt (Result).

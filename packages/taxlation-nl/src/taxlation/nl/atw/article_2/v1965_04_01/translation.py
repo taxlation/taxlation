@@ -4,7 +4,8 @@ from dataclasses import dataclass
 #import datetime module
 from datetime import date, timedelta
 
-#import Artikel3 dataclass
+#import taxlation
+from taxlation.core.result import Result
 from taxlation.nl.atw.article_3 import Artikel3
 
 @dataclass
@@ -12,26 +13,11 @@ class Artikel2:
   """
   Dataclass voor Art. 2 Algemene termijnenwet
   """
-  datum_einde_wettelijke_termijn: date # einddatum van een in de wet gestelde termijn
-  wettelijke_termijn: timedelta # in een wet gestelde termijn
-  verlenging_termijn: timedelta = timedelta(days=0) # verlenging van een in de wet gestelde termijn
- 
-  def __post_init__(self):
-    self.art_2()
+  wettelijke_termijn: timedelta # een in een wet gestelde termijn
+  einddatum_wettelijke_termijn: date # einddatum van een in de wet gestelde termijn
 
   @property
-  def datum_einde_verlengde_termijn(self):
-    """
-    Berekent de einddatum van de wettelijke termijn met inachtneming van verlenging van de termijn.
-
-    Functie telt de eventuele verlenging op bij de einddatum van de wettelijke termijn.
-
-    Geeft terug:
-      date: De einddatum met inachtneming van de verlenging.
-    """
-    return self.datum_einde_wettelijke_termijn + self.verlenging_termijn
-
-  def art_2(self):
+  def verlenging_wettelijke_termijn(self) -> Result:
     """
     Verlengt de termijn in geval de termijn ten minste drie dagen is maar niet bestaat uit twee werkdagen.
 
@@ -41,20 +27,34 @@ class Artikel2:
     Geeft terug:
      timedelta: De verlenging van de termijn.
     """
+
     if (self.wettelijke_termijn >= timedelta(days=3)):
-      datum_start_wettelijke_termijn = self.datum_einde_wettelijke_termijn - self.wettelijke_termijn + timedelta(days=1)
-      huidige_datum = datum_start_wettelijke_termijn
+      begindatum_wettelijke_termijn = self.einddatum_wettelijke_termijn - self.wettelijke_termijn 
+      huidige_datum = begindatum_wettelijke_termijn + timedelta(days=1)
       werkdagen = 0
 
-      while (huidige_datum <= self.datum_einde_wettelijke_termijn):
+      while (huidige_datum <= self.einddatum_wettelijke_termijn):
         if huidige_datum.weekday() < 5 and huidige_datum not in Artikel3(jaar=huidige_datum.year).algemeen_erkende_feestdagen:
           werkdagen += 1
         huidige_datum += timedelta(days=1)
 
+      verlenging_termijn = timedelta(days=0)
       while werkdagen < 2:
-        self.verlenging_termijn += timedelta(days=1)
+        verlenging_termijn += timedelta(days=1)
+        einddatum_verlengde_termijn= self.einddatum_verlengde_wettelijke_termijn(verlenging_termijn)
 
-        if self.datum_einde_verlengde_termijn.weekday() < 5  and self.datum_einde_verlengde_termijn not in Artikel3(jaar=self.datum_einde_verlengde_termijn.year).algemeen_erkende_feestdagen:
+        if einddatum_verlengde_termijn.weekday() < 5  and einddatum_verlengde_termijn not in Artikel3(jaar=einddatum_verlengde_termijn.year).algemeen_erkende_feestdagen:
           werkdagen +=1
       
-      return self.verlenging_termijn
+      return Result("Artikel 2 Atw",verlenging_termijn, "Termijn zoveel verlengd dat daarin ten minste twee dagen voorkomen die niet een zaterdag, zondag of algmeen erkende feestdag zijn.")
+
+  def einddatum_verlengde_wettelijke_termijn(self, verlenging_termijn) -> date:
+    """
+    Berekent de einddatum van de wettelijke termijn met inachtneming van verlenging van de termijn.
+
+    Functie telt de eventuele verlenging op bij de einddatum van de wettelijke termijn.
+
+    Geeft terug:
+      date: De einddatum met inachtneming van de verlenging.
+    """
+    return self.einddatum_wettelijke_termijn + verlenging_termijn
