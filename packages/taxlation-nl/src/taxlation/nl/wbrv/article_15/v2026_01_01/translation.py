@@ -70,7 +70,7 @@ class Artikel15:
         else:
           return Result("Artikel 15, lid 1, onderdeel p, WBRV", False, "Startersvrijstelling niet van toepassing", (self.verkrijging_woning, self.subonderdeel_1, self.subonderdeel_2, self.subonderdeel_3, self.subonderdeel_4))
 
-    onderdeel_p: OnderdeelP
+    onderdeel_p: OnderdeelP 
 
     @property
     def vrijstelling(self) -> Result:
