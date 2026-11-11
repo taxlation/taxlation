@@ -30,11 +30,6 @@ class Result[T]:
     explanation: str
     trail: tuple["Result", ...] = ()
 
-    # def __bool__(self) -> bool:  # zodat je 'm nog in if/and kunt gebruiken
-    #   if not isinstance(self.result, bool):
-    #      raise TypeError(f"{self.result}: Result is not a bool.")
-    #   return self.result
-
     def to_dict(self) -> dict:
       d = {
         "origin": self.origin,
@@ -48,4 +43,4 @@ class Result[T]:
       return d
 
     def __repr__(self) -> str:
-       return json.dumps(self.to_dict(), ensure_ascii= False, indent=2)
+       return json.dumps(self.to_dict(), ensure_ascii= False, indent=2, default= str)

@@ -27,7 +27,7 @@ class Artikel1:
       """
       Past de termijn aan zodat de einddatum niet eindigt op zater-, zon- en feestdagen.
 
-      Functie controleert of einddatum op een zater-, zon- of feestdag valt, of in de lijst met feeestdagen voorkomt. 
+      Functie controleert of einddatum op een zater-, zon- of feestdag valt, of in de lijst met feestdagen voorkomt. 
       Als dat zo is, wordt de termijn met één dag verlengd en wordt de functie opnieuw toegepast.
       
       Geeft terug:
@@ -36,7 +36,7 @@ class Artikel1:
 
       verlenging_termijn = timedelta(days=0)
 
-      while self.einddatum_verlengde_wettelijke_termijn(verlenging_termijn).weekday() >= 5 or self.einddatum_verlengde_wettelijke_termijn(verlenging_termijn) in Artikel3(jaar=self.einddatum_verlengde_wettelijke_termijn(verlenging_termijn).year).algemeen_erkende_feestdagen:
+      while self.einddatum_verlengde_wettelijke_termijn(verlenging_termijn).weekday() >= 5 or self.einddatum_verlengde_wettelijke_termijn(verlenging_termijn) in self.algemeen_erkende_feestdagen(datum=self.einddatum_verlengde_wettelijke_termijn(verlenging_termijn)):
         verlenging_termijn += timedelta(days=1)
       
       return Result("Artikel 1 lid 1 Atw", verlenging_termijn, "Termijn verlengd tot en met de eerstvolgende dag die niet een zaterdag, zondag of algemeen erkende feestdag is.",)
@@ -52,10 +52,29 @@ class Artikel1:
       """
       return self.einddatum_wettelijke_termijn + verlenging_termijn
 
+    def algemeen_erkende_feestdagen(self, datum):
+      """
+      Maakt een lijst van algemeen erkende feestdagen genoemd in artikel 3 Atw.
+
+      Deze functie achterhaalt de datum van de genoemde feestdagen in lid 1, lid 2 en lid 3 en voegt deze samen in een lijst.
+
+      Geeft terug:
+        list[date]
+      """
+            
+      atw_art_3 = Artikel3(datum_toepassing = datum,
+        lid_1= Artikel3(datum_toepassing = datum).Lid1(jaar=datum.year),
+        lid_2= Artikel3(datum_toepassing = datum).Lid2(jaar=datum.year),
+        lid_3= Artikel3(datum_toepassing = datum).Lid3(jaar=datum.year)
+      )
+      algemeen_erkende_feestdagen= (atw_art_3.lid_1.algemeen_erkende_feestdagen.result + atw_art_3.lid_1.algemeen_erkende_feestdagen.result + atw_art_3.lid_1.algemeen_erkende_feestdagen.result)
+      
+      return algemeen_erkende_feestdagen
+
   @dataclass
   class Lid2:
     """
-    Dataclass voor Artikel 1 lid 1 Atw
+    Dataclass voor Artikel 1 lid 2 Atw
     """
     lid_1: "Artikel1.Lid1"
 
@@ -75,3 +94,6 @@ class Artikel1:
         return Result("Artikel 1 lid 2 Atw", True, "Artikel 1 lid 1 geldt niet voor een termijn, bepaald door terugrekening vanaf een tijdstip of gebeurtenis.", (self.lid_1.verlenging_wettelijke_termijn,))
       else:
         return Result("Artikel 1 lid 2 Atw", False, "Artikel 1 lid 2 Atw is niet van toepassing.", (self.lid_1.verlenging_wettelijke_termijn,))
+
+  lid_1: Lid1 = None
+  lid_2: Lid2 = None

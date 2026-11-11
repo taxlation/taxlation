@@ -2,7 +2,9 @@
 
 ## Classes
 ### Artikel1
-Slechts container.
+**Fields**
+- _lid_1: dataclass Lid1 (dataclass).
+- _lid_2: dataclass Lid2 (dataclass).
 
 #### Lid1
 **Fields**
@@ -11,6 +13,7 @@ Slechts container.
 
 **Properties**
 - _verlenging_wettelijke_termijn_: verlenging van een in de wet gestelde termijn die op een zaterdag, zondag of algemeen erkende feestdag eindigt tot en met de eerstvolgende dag die niet een zaterdag, zondag of algemeen erkende feestdag is (timedelta).
+- _algemeen_erkende_feestdagen_: maakt een lijst van algemeen erkende feestdagen genoemd in lid 1 tot en met 3 (list[date]).
 
 **Methods**
 - _einddatum_verlengde_wettelijke_termijn_: berekent de einddatum van een in de wet gestelde termijn met inachtneming van eventuele verlenging (date).

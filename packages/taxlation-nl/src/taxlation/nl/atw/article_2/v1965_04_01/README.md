@@ -11,3 +11,4 @@
 
 **Methods**
 - _einddatum_verlengde_wettelijke_termijn_: berekent de einddatum van een in de wet gestelde termijn met inachtneming van eventuele verlenging (date).
+- _algemeen_erkende_feestdagen_: maakt een lijst van algemeen erkende feestdagen genoemd in lid 1 tot en met 3 (list[date]).

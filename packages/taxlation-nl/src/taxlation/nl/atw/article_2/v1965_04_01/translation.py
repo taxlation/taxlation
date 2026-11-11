@@ -29,12 +29,12 @@ class Artikel2:
     """
 
     if (self.wettelijke_termijn >= timedelta(days=3)):
-      begindatum_wettelijke_termijn = self.einddatum_wettelijke_termijn - self.wettelijke_termijn 
-      huidige_datum = begindatum_wettelijke_termijn + timedelta(days=1)
+      begindatum_wettelijke_termijn = self.einddatum_wettelijke_termijn - self.wettelijke_termijn + timedelta(days=1)
+      huidige_datum = begindatum_wettelijke_termijn 
       werkdagen = 0
 
       while (huidige_datum <= self.einddatum_wettelijke_termijn):
-        if huidige_datum.weekday() < 5 and huidige_datum not in Artikel3(jaar=huidige_datum.year).algemeen_erkende_feestdagen:
+        if huidige_datum.weekday() < 5 and huidige_datum not in self.algemeen_erkende_feestdagen(huidige_datum):
           werkdagen += 1
         huidige_datum += timedelta(days=1)
 
@@ -43,10 +43,10 @@ class Artikel2:
         verlenging_termijn += timedelta(days=1)
         einddatum_verlengde_termijn= self.einddatum_verlengde_wettelijke_termijn(verlenging_termijn)
 
-        if einddatum_verlengde_termijn.weekday() < 5  and einddatum_verlengde_termijn not in Artikel3(jaar=einddatum_verlengde_termijn.year).algemeen_erkende_feestdagen:
+        if einddatum_verlengde_termijn.weekday() < 5  and einddatum_verlengde_termijn not in self.algemeen_erkende_feestdagen(einddatum_verlengde_termijn):
           werkdagen +=1
       
-      return Result("Artikel 2 Atw",verlenging_termijn, "Termijn zoveel verlengd dat daarin ten minste twee dagen voorkomen die niet een zaterdag, zondag of algmeen erkende feestdag zijn.")
+      return Result("Artikel 2 Atw", verlenging_termijn, "Termijn zoveel verlengd dat daarin ten minste twee dagen voorkomen die niet een zaterdag, zondag of algmeen erkende feestdag zijn.")
 
   def einddatum_verlengde_wettelijke_termijn(self, verlenging_termijn) -> date:
     """
@@ -58,3 +58,14 @@ class Artikel2:
       date: De einddatum met inachtneming van de verlenging.
     """
     return self.einddatum_wettelijke_termijn + verlenging_termijn
+
+  def algemeen_erkende_feestdagen(datum) -> list[date]:
+    atw_art_3 = Artikel3(datum_toepassing = datum,
+      lid_1= Artikel3(datum_toepassing = datum).Lid1(jaar=datum.year),
+      lid_2= Artikel3(datum_toepassing = datum).Lid2(jaar=datum.year),
+      lid_3= Artikel3(datum_toepassing = datum).Lid3(jaar=datum.year)
+    )
+    
+    algemeen_erkende_feestdagen= (atw_art_3.lid_1.algemeen_erkende_feestdagen.result + atw_art_3.lid_1.algemeen_erkende_feestdagen.result + atw_art_3.lid_1.algemeen_erkende_feestdagen.result)
+        
+    return algemeen_erkende_feestdagen    

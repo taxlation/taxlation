@@ -52,7 +52,7 @@ source = { editable = "packages/taxlation-core" }
 
 [[package]]
 name = "taxlation-nl"
-version = "0.1.0"
+version = "0.1.1"
 source = { editable = "packages/taxlation-nl" }
 dependencies = [
     { name = "python-dateutil" },

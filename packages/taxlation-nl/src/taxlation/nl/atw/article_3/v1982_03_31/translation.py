@@ -4,6 +4,9 @@ from datetime import date, timedelta
 #import dataclasses module
 from dataclasses import dataclass
 
+#import taxlation
+from taxlation.core.result import Result
+
 @dataclass
 class Artikel3:
   """
@@ -42,7 +45,7 @@ class Artikel3:
         date(self.jaar, 5, 5) # vijfde mei
       ]
 
-      return algemeen_erkende_feestdagen
+      return Result("Artikel 3 lid 1 Atw", algemeen_erkende_feestdagen, "Algemeen erkende feestdagen in de zin van deze wet.")
     
   @dataclass
   class Lid2:
@@ -63,9 +66,10 @@ class Artikel3:
         list[date]
       """
       eerste_paasdag = Artikel3.datum_eerste_paasdag(self.jaar)
+      goede_vrijdag = [eerste_paasdag - timedelta(days=2)]
   
-      return [eerste_paasdag - timedelta(days=2)]
-    
+      return Result("Artikel 3 lid 2 Atw", goede_vrijdag, "Goede vrijdag wordt met de algemeen erkende feestdagen gelijkgesteld.")
+     
   @dataclass
   class Lid3:
     """
@@ -94,25 +98,12 @@ class Artikel3:
         if (dag.year == self.jaar):
           bereik_gelijkstelling_feestdagen.append(dag)
 
-      return bereik_gelijkstelling_feestdagen
+      return Result("Artikel 3 lid 3 Atw", bereik_gelijkstelling_feestdagen, "Bepaalde dagen die voor de toepassing van deze wet met algemeen erkende feestdagen zijn gelijkgesteld.")
 
-  jaar: int = None # jaar waarin algemeen erkende feestdagen dienen te worden achterhaalt
 
-  @property
-  def algemeen_erkende_feestdagen(self) -> list[date]:
-    """
-    Maakt een gesorteerde lijst van algemeen erkende feestdagen.
-
-    Functie voegt de feestdagen op basis van lid 1, 2 en 3 samen
-
-    Geeft terug:
-      list[date]
-    """
-    lijst_algemeen_erkende_feestdagen = (Artikel3.Lid1(self.jaar).algemeen_erkende_feestdagen)
-    lijst_algemeen_erkende_feestdagen.extend(Artikel3.Lid2(self.jaar).algemeen_erkende_feestdagen)
-    lijst_algemeen_erkende_feestdagen.extend(Artikel3.Lid3(self.jaar).algemeen_erkende_feestdagen)
-
-    return sorted(lijst_algemeen_erkende_feestdagen)
+  lid_1: Lid1 = None
+  lid_2: Lid2 = None
+  lid_3: Lid3 = None
 
   @staticmethod
   def datum_eerste_paasdag(jaar) -> date:
